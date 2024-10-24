@@ -28,4 +28,6 @@ def train(X_train, y_train):
         n_estimators=150,
     )
 
-    return regressor.fit(X_train, y_train)
+    regressor.fit(X_train, y_train)
+
+    return regressor
