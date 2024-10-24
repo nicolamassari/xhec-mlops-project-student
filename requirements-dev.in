@@ -1,0 +1,8 @@
+# Include all production dependencies
+-r requirements.in
+
+# Development and testing tools
+black
+flake8
+pytest
+pre-commit
