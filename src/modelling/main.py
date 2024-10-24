@@ -1,19 +1,29 @@
-# This module is the training flow: it reads the data, preprocesses it, trains a model and saves it.
-
 import argparse
+import pickle
+from pathlib import Path
+
+import pandas as pd
+from config import NUMERICAL_FEATURES, OUTLIER_CONDITIONS, SEX_MAPPING, TARGET
+from preprocessing import preprocess_data
+from training import train_rf
 
 
 def main(trainset_path: Path) -> None:
     """Train a model using the data at the given path and save the model (pickle)."""
     # Read data
+    df = pd.read_csv(trainset_path)
 
     # Preprocess data
-
-    # (Optional) Pickle encoder if need be
+    X_train, y_train = preprocess_data(
+        df, "Sex", SEX_MAPPING, OUTLIER_CONDITIONS, NUMERICAL_FEATURES, TARGET
+    )
 
     # Train model
+    model = train_rf(X_train, y_train)
 
-    # Pickle model --> The model should be saved in pkl format the `src/web_service/local_objects` folder
+    # Pickle model
+    with open("../src/web_service/local_objects/model.pkl", "wb") as f:
+        pickle.dump(model, f)
 
 
 if __name__ == "__main__":
