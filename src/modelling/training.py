@@ -1,6 +1,8 @@
 from sklearn.ensemble import RandomForestRegressor
+from prefect import task
 
 
+@task(name="Train model")
 def train_rf(X_train, y_train):
     """
     Trains a RandomForestRegressor model using the provided training data.

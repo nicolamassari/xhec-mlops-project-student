@@ -142,3 +142,54 @@ This will guarantee that your code is formatted correctly and of good quality be
 ```bash
 pip-compile requirements.in
 ```
+
+### Running the code
+
+1. **Set Up a Virtual Environment**: You can use either venv or conda. For example, using venv:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+2. **Install Dependencies**: Install the required packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. **Run the Main Script**: Execute the training script to orchestrate the model:
+
+```bash
+python src/modelling/main.py
+```
+
+This script will handle all necessary steps, including data preprocessing, training, and predictions.
+
+
+### Prefect setup:
+
+Steps :
+
+- Set an API URL for your local server to make sure that your workflow will be tracked by this specific instance :
+```
+prefect config set PREFECT_API_URL=http://0.0.0.0:4200/api
+```
+
+- Check you have SQLite installed ([Prefect backend database system](https://docs.prefect.io/2.13.7/getting-started/installation/#external-requirements)):
+```
+sqlite3 --version 
+```
+
+- Start a local prefect server :
+```
+prefect server start --host 0.0.0.0
+```
+
+If you want to reset the database, run :
+```
+prefect server database reset
+```
+
+
+You can visit the UI at http://0.0.0.0:4200/dashboard

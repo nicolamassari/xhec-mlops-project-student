@@ -3,7 +3,7 @@ import pickle
 from pathlib import Path
 
 import pandas as pd
-from config import NUMERICAL_FEATURES, OUTLIER_CONDITIONS, SEX_MAPPING, TARGET
+from config import NUMERICAL_FEATURES, OUTLIER_CONDITIONS, SEX_MAPPING
 from preprocessing import preprocess_data
 from training import train_rf
 
