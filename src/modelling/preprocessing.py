@@ -31,7 +31,7 @@ def remove_outliers(df: pd.DataFrame, conditions: list) -> pd.DataFrame:
                          (column, operator, value) for outlier removal.
 
     Returns:
-    - pd.DataFrame: The dataframe with outliers removed based on the conditions.
+    - pd.DataFrame: The dataframe with outliers removed.
     """
     for column, operator, value in conditions:
         if operator == ">":
@@ -49,25 +49,30 @@ def extract_x_y(
     df: pd.DataFrame,
     categorical_cols: List[str],
     numerical_cols: List[str],
-    target: str,
+    with_target: bool = True,
 ) -> dict:
     """
     Extract features (X) and target (y) from the dataframe.
 
     Parameters:
     - df: The input dataframe containing the dataset.
-    - categorical_cols: A list of categorical column names to include in the features.
-    - numerical_cols: A list of numerical column names to include in the features.
-    - target: The name of the target column to predict.
+    - categorical_cols: A list of categorical column names.
+    - numerical_cols: A list of numerical column names.
+    - with_target: wether the target should be included in the output or not.
 
     Returns:
     - A tuple containing:
-        - X: A dataframe with selected feature columns (both numerical and categorical).
+        - X: A dataframe with selected feature columns.
         - y: The target variable values.
     """
     features = numerical_cols + [categorical_cols]
     X = df[features]
-    y = df[target]
+
+    y = None
+
+    if with_target:
+        y = df["Rings"].values
+
     return X, y
 
 
@@ -77,7 +82,7 @@ def preprocess_data(
     encoding_map: dict,
     outlier_conditions: list,
     numerical_cols: List[str],
-    target: str,
+    with_target: bool = True,
 ) -> tuple:
     """
     Preprocessing pipeline: Encode categorical features, remove outliers,
@@ -89,7 +94,7 @@ def preprocess_data(
     - encoding_map: A mapping of categorical values to numeric codes.
     - outlier_conditions: A list of conditions for outlier removal.
     - numerical_cols: A list of numerical columns to include in the feature set.
-    - target: The name of the target column.
+    - with_target: Boolean defining if the target should be included in the output.
 
     Returns:
     - A tuple containing:
@@ -100,5 +105,7 @@ def preprocess_data(
     df = remove_outliers(df, outlier_conditions)
 
     categorical_cols = [categorical_feature]
-    X, y = extract_x_y(df, categorical_cols, numerical_cols, target)
+
+    X, y = extract_x_y(df, categorical_cols, numerical_cols, with_target)
+
     return X, y
