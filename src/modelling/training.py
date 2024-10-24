@@ -1,7 +1,7 @@
 from sklearn.ensemble import RandomForestRegressor
 
 
-def train(X_train, y_train):
+def train_rf(X_train, y_train):
     """
     Trains a RandomForestRegressor model using the provided training data.
 
