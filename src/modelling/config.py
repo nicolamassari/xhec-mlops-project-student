@@ -1,5 +1,3 @@
-TARGET = "Rings"
-
 NUMERICAL_FEATURES = [
     "Length",
     "Diameter",
