@@ -1,10 +1,9 @@
 import numpy as np
 import pandas as pd
 from prefect import task
+from preprocessing import preprocess_data
 from sklearn.base import BaseEstimator
 from sklearn.metrics import mean_squared_error
-
-from modelling.preprocessing import preprocess_data
 
 
 @task(name="Make predictions")
