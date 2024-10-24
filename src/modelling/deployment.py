@@ -13,7 +13,7 @@ if __name__ == "__main__":
         parameters={
             "train_filepath": os.path.join(DATA_DIRPATH, "trainset.csv"),
             "test_filepath": os.path.join(DATA_DIRPATH, "valset.csv"),
-            "artifacts_filepath": MODELS_DIRPATH,
+            "model_filepath": MODELS_DIRPATH,
         },
     )
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
         interval=600,
         parameters={
             "input_filepath": os.path.join(DATA_DIRPATH, "testset.csv"),
-            "artifacts_filepath": MODELS_DIRPATH,
+            "model_filepath": MODELS_DIRPATH,
         },
     )
     serve(train_model_deployment, batch_predict_deployment)
