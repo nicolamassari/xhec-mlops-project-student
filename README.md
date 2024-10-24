@@ -1,144 +1,131 @@
 <div align="center">
 
-# xhec-mlops-project-student
+# Abalone Age Prediction API
 
-[![Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10-blue.svg)]()
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)]()
+[![FastAPI](https://img.shields.io/badge/fastapi-0.68.0-green.svg)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/docker-enabled-brightgreen.svg)](https://www.docker.com/)
 
-[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-[![Linting: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-informational?logo=pre-commit&logoColor=white)](https://github.com/artefactory/xhec-mlops-project-student/blob/main/.pre-commit-config.yaml)
 </div>
 
-This repository has for purpose to industrialize the [Abalone age prediction](https://www.kaggle.com/datasets/rodolfomendes/abalone-dataset) Kaggle contest.
+## Project Overview
 
-<details>
-<summary>Details on the Abalone Dataset</summary>
+The **Abalone Age Prediction API** is a FastAPI-based application that predicts the age of an abalone based on its physical measurements and sex. The prediction is expressed as the number of rings in the abalone, which correlates with its age. This API provides endpoints to serve predictions using a machine learning model and supports robust deployments using Docker and Prefect for server management.
 
-The age of abalone is determined by cutting the shell through the cone, staining it, and counting the number of rings through a microscope -- a boring and time-consuming task. Other measurements, which are easier to obtain, are used to predict the age.
+### Features
+- **FastAPI**: A modern web framework for building APIs with Python.
+- **Pydantic**: For data validation and serialization of incoming requests.
+- **MLflow**: Integrated to track model experiments.
+- **Prefect**: A server to orchestrate workflows.
+- **Docker**: Containerization for consistent deployments.
 
-**Goal**: predict the age of abalone (column "Rings") from physical measurements ("Shell weight", "Diameter", etc...)
+## Team Members
+- **Nicola Massari** - [GitHub Profile](https://github.com/nicolamassari)
+- **Alexandra Catalina Negoita** - [GitHub Profile](https://github.com/Catalina-13)
+- **Dora Bijvoet** - [GitHub Profile](https://github.com/dorabijvoet)
+- **Jack Khoueiri** - [GitHub Profile](https://github.com/jackkhoueiri)
+- **Yanqing Mao** - [GitHub Profile](https://github.com/yanqing-mao)
 
-You can download the dataset on the [Kaggle page](https://www.kaggle.com/datasets/rodolfomendes/abalone-dataset)
 
-</details>
+## Requirements
+- Python 3.8+
+- FastAPI
+- Uvicorn
+- Prefect
+- Pydantic
+- Scikit-learn
+- Docker (for containerized deployment)
 
-## Table of Contents
+## Setup Instructions
 
-- [xhec-mlops-project-student](#xhec-mlops-project-student)
-  - [Table of Contents](#table-of-contents)
-  - [Deliverables and Evaluation](#deliverables-and-evaluation)
-    - [Deliverables](#deliverables)
-    - [Evaluation](#evaluation)
-  - [Steps to reproduce to build the deliverable](#steps-to-reproduce-to-build-the-deliverable)
-    - [Pull requests in this project](#pull-requests-in-this-project)
-    - [Tips to work on this project](#tips-to-work-on-this-project)
+1. **Clone the Repository**
+   ```bash
+   git clone <repository_url>
+   cd project-root
 
-## Deliverables and notation
+2. **Set Up a Virtual Environment**
+  python -m venv mlops-env
+  source mlops-env/bin/activate  # For Windows: .\mlops-env\Scripts\activate
 
-### Deliverables
+3. **Install Dependencies**
+   pip install -r requirements.txt
 
-The deliverable of this project is a copy of this repository with the industrialization of the Abalone age prediction model. We expect to see: 
+4. **Model and Preprocessor Preparation**
+   Make sure the trained model and preprocessor files are located at the paths specified in app_config.py. For instance:
 
-1. a workflow to train a model using Prefect
-- The workflows to train the model and to make the inference (prediction of the age of abalone) are in separate modules and use Prefect `flow` and `task` objects
-- The code to get the trained model and encoder is in a separate module and must be reproducible (not necessarily in a docker container)
-2. a Prefect deployment to retrain the model regularly
-3. an API that runs on a local app and that allows users to make predictions on new data
-  - A working API which can be used to make predictions on new data
-    - The API can run on a docker container
-    - The API has validation on input data (use Pydantic)
+    local_models/preprocessor_v0.0.1.pkl
+    local_models/model_v0.0.1.pkl
 
-### Evaluation
+## Running the Application
+1. **Start the Application Locally**
+Run the FastAPI app using Uvicorn:
+uvicorn src.web_service.app:app --reload --host 0.0.0.0 --port 8000
+Access the app at http://localhost:8000.
+View API documentation at http://localhost:8000/docs.
 
-Each of your pull requests will be graded based on the following criteria:
+2. **Running via Docker**
+2.1. Build the Docker Image
+docker build -t abalone-age-prediction-app .
+2.2. Run the Docker Container
+docker run -p 8001:8001 abalone-age-prediction-app
+The app will be accessible at http://localhost:8001.
 
-- **Clarity** and quality of code
-  - good module structure
-  - naming conventions
-  - use of docstrings and type hinting
-- **Formatting**
-  - respect of clear code conventions
-  
-  *P.S. you can use a linter and automatic code formatters to help you with that*
 
-- Proper **Functioning** of the code
-  - the code must run without bugs
+## Prefect Integration
+The project uses Prefect to manage workflows. To start the Prefect server and run the app, use the following commands:
+# Make sure the script is executable
+chmod +x bin/run_services.sh
 
-Bseides the evaluation of the pull requests, we will also evaluate: 
-- **Reproducibility** and clarity of instructions to run the code (we will actually try to run your code)
-  - Having a clear README.md with 
-    - the context of the project
-    - the name of the participants and their github users
-    - the steps to recreate the Python environment
-    - the instructions to run all parts of the code
-- Use of *Pull Requests* (see below) to coordinate your collaboration 
+# Run Prefect and FastAPI services
+./bin/run_services.sh
 
-## Steps to reproduce to build the deliverable
 
-To help you with the structure and order of steps to perform in this project, we created different pull requests templates. 
-Each branch in this repository corresponds to a future pull request and has an attached markdown file with the instructions to perform the tasks of the pull request.
-Each branch starts with a number.
-You can follow the order of the branches to build your project and collaborate.
+## Endpoints
+1. **Health Check**
+URL: /
+Method: GET
+Response: {"health_check": "App up and running!"}
 
-> [!NOTE]
-> There are "TODO" in the code of the different branches. Each "TODO" corresponds to a task to perform to build the project.
-> [!IMPORTANT]
-> Remember to remove all code that is not used before the end of the project (including all TODO tags in the code).
+2. **Prediction Endpoint**
+URL: /predict
+Method: POST
+Description: Predicts the number of rings (indicative of age) based on input data.
 
-**Please follow these steps**:
+Request Body:
+{
+  "length": 0.455,
+  "diameter": 0.365,
+  "height": 0.095,
+  "whole_weight": 0.514,
+  "shucked_weight": 0.2245,
+  "viscera_weight": 0.101,
+  "shell_weight": 0.15,
+  "sex": "M"
+}
 
-- If not done already, create a GitHub account
-- If not done already, create a [Kaggle account](https://www.kaggle.com/account/login?phase=startRegisterTab&returnUrl=%2F) (so you can download the dataset)
-- Fork this repository (one person per group)
+Response:
+{
+  "predicted_rings": 10.5
+}
 
-**WARNING**: make sure to **unselect** the option "Copy the `master` branch only", so you have all the branches in the forked repository.
-
-- Add the different members of your group as admin to your forked repository
-- Follow the order of the numbered branches and for each branch:
-  - Read the PR_i.md (where i is the number of the branch) file to understand the task to perform
-   > [!NOTE]
-   > Dont forget to integrate your work from past branches (except for when working on branch #1 obviously (!))
-   > ```bash
-   > git checkout branch_number_i
-   > git pull origin master
-   > # At this point, you might have a VIM window opening, you can close it using the command ":wq" 
-   > git push
-   > ```
-    - Read and **follow** all the instructions in the the PR instructions file
-    - Do as many commits as necessary on the branch_number_i to perform the task indicated in the corresponding markdown file
-    - Open **A SINGLE** pull request from this branch to the main branch of your forked repository
-    - Once done, merge the pull request in the main branch of your forked repository
-
-### Pull requests in this project
-
-Github [Pull Requests](https://docs.github.com/articles/about-pull-requests) are a way to propose changes to a repository. They have for purpose to integrate the work of *feature branches* into the main branch of the repository, with a collaborative review process.
-
-**PR tips:**
-
-Make sure that you select your own repository when selecting the base repository:
-
-![PR Wrong](assets/PR_wrong.png)
-
-It should rather look like this:
-
-![PR Right](assets/PR_right.png)
-
-### Tips to work on this project
-
-- Use a virtual environment to install the dependencies of the project (conda or virtualenv for instance)
-
-- Once your virtual environment is activated, install pre-commit hooks to automatically format your code before each commit:
-
-```bash
-pip install pre-commit
+## Development and Contribution
+1. **Pre-Commit Hooks:** Pre-commit hooks ensure code quality. To set them up:
 pre-commit install
-```
+2. **Testing:** Add tests in a dedicated tests/ folder and use pytest to run tests
+   pytest
 
-This will guarantee that your code is formatted correctly and of good quality before each commit.
+3. **Code** Formatting and Linting: The project uses tools like black and flake8 for formatting and linting:
+black .
+flake8 .
 
-- Use a `requirements.in` file to list the dependencies of your project. You can use the following command to generate a `requirements.txt` file from a `requirements.in` file:
+## Deployment
+To deploy the app, you can either build and push the Docker image to a container registry or use any cloud service that supports Docker deployments.
 
-```bash
-pip-compile requirements.in
-```
+## Troubleshooting
+Port Issues: Ensure that the ports exposed in Docker and on your local machine do not conflict with other services.
+Model Loading Issues: Ensure that the model and preprocessor paths in app_config.py are correct.
+
+   
+
+
+
