@@ -1,10 +1,8 @@
 # app_config.py
 
 # MODELS
-MODEL_VERSION = "0.0.1"
-PATH_TO_PREPROCESSOR = f"local_models/preprocessor_v{MODEL_VERSION}.pkl"
-PATH_TO_MODEL = f"local_models/model_v{MODEL_VERSION}.pkl"
-CATEGORICAL_VARS = ["sex"] 
+PATH_TO_MODEL = f"local_objects/model.pkl"
+CATEGORICAL_VARS = ["sex"]
 
 # MISC
 APP_TITLE = "AbaloneAgePredictionApp"

@@ -2,6 +2,7 @@
 
 from pydantic import BaseModel
 
+
 class InputData(BaseModel):
     length: float
     diameter: float
