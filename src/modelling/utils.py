@@ -2,8 +2,16 @@
 import os
 import pickle
 from functools import lru_cache
+from typing import Any
 
 from loguru import logger
+from prefect import task
+
+
+@task(name="Save pickle")
+def save_pickle(path: str, obj: Any):
+    with open(path, "wb") as f:
+        pickle.dump(obj, f)
 
 
 @lru_cache

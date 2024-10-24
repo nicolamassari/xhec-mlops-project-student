@@ -1,8 +1,10 @@
 from typing import List
 
 import pandas as pd
+from prefect import flow, task
 
 
+@task
 def label_encode_column(
     df: pd.DataFrame, categorical_feature: str, encoding_map: dict
 ) -> pd.DataFrame:
@@ -21,6 +23,7 @@ def label_encode_column(
     return df
 
 
+@task
 def remove_outliers(df: pd.DataFrame, conditions: list) -> pd.DataFrame:
     """
     Remove outliers from the dataframe based on a list of conditions.
@@ -45,6 +48,7 @@ def remove_outliers(df: pd.DataFrame, conditions: list) -> pd.DataFrame:
     return df
 
 
+@task
 def extract_x_y(
     df: pd.DataFrame,
     numerical_cols: List[str],
@@ -76,6 +80,7 @@ def extract_x_y(
     return X, y
 
 
+@flow(name="Preprocess data")
 def preprocess_data(
     df: pd.DataFrame,
     categorical_feature: str,
