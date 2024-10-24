@@ -1,13 +1,16 @@
 import os
+from typing import Optional
 
+import numpy as np
 import pandas as pd
 from config import NUMERICAL_FEATURES, OUTLIER_CONDITIONS, SEX_MAPPING
 from loguru import logger
 from predicting import evaluate_model, predict
 from prefect import flow
 from preprocessing import preprocess_data
+from sklearn.ensemble import RandomForestRegressor
 from training import train_rf
-from utils import save_pickle
+from utils import load_pickle, save_pickle
 
 
 @flow(name="Training Workflow")
@@ -52,3 +55,22 @@ def train_model_workflow(
         save_pickle(os.path.join(model_filepath, "model.pkl"), model)
 
     return {"model": model, "rmse": rmse}
+
+
+@flow(name="Batch predict", retries=1, retry_delay_seconds=30)
+def batch_predict_workflow(
+    input_filepath: str,
+    model: Optional[RandomForestRegressor] = None,
+    model_filepath: Optional[str] = None,
+) -> np.ndarray:
+    """Make predictions on a new dataset"""
+    df = pd.read_csv(input_filepath)
+
+    if model is None:
+        model = load_pickle(os.path.join(model_filepath, "model.pkl"))
+
+    X, _ = preprocess_data(
+        df, "Sex", SEX_MAPPING, OUTLIER_CONDITIONS, NUMERICAL_FEATURES, False
+    )
+    y_pred = predict(X, model)
+    return y_pred
