@@ -1,10 +1,12 @@
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator
+from prefect import task
 
 from modelling.preprocessing import preprocess_data
 
 
+@task(name="Make predictions")
 def predict(df: pd.DataFrame, model: BaseEstimator) -> np.ndarray:
     """Predict Rings based on df data and model"""
 
