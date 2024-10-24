@@ -15,14 +15,14 @@ def main(trainset_path: Path) -> None:
 
     # Preprocess data
     X_train, y_train = preprocess_data(
-        df, "Sex", SEX_MAPPING, OUTLIER_CONDITIONS, NUMERICAL_FEATURES, TARGET
+        df, "Sex", SEX_MAPPING, OUTLIER_CONDITIONS, NUMERICAL_FEATURES, True
     )
 
     # Train model
     model = train_rf(X_train, y_train)
 
     # Pickle model
-    with open("../src/web_service/local_objects/model.pkl", "wb") as f:
+    with open("src/web_service/local_objects/model.pkl", "wb") as f:
         pickle.dump(model, f)
 
 

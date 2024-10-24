@@ -47,8 +47,8 @@ def remove_outliers(df: pd.DataFrame, conditions: list) -> pd.DataFrame:
 
 def extract_x_y(
     df: pd.DataFrame,
-    categorical_cols: List[str],
     numerical_cols: List[str],
+    categorical_cols: List[str],
     with_target: bool = True,
 ) -> dict:
     """
@@ -65,7 +65,7 @@ def extract_x_y(
         - X: A dataframe with selected feature columns.
         - y: The target variable values.
     """
-    features = numerical_cols + [categorical_cols]
+    features = numerical_cols + categorical_cols
     X = df[features]
 
     y = None
@@ -105,7 +105,6 @@ def preprocess_data(
     df = remove_outliers(df, outlier_conditions)
 
     categorical_cols = [categorical_feature]
-
     X, y = extract_x_y(df, categorical_cols, numerical_cols, with_target)
 
     return X, y
